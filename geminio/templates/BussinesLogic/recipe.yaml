@@ -1,0 +1,75 @@
+requiredParams:
+  name: Podlodka data, domain layer feature
+  description: Генерирует объекты для data и domain слоя
+
+widgets:
+  - stringParameter:
+      id: feature
+      name: Имя фичи
+      constraints:
+        - class
+        - nonempty
+        - unique
+      default: FeatureName
+
+  - booleanParameter:
+      id: includeNetwork
+      name: Сгенерировать объекты для сети?
+      help: Генерирует объекты для работы с сетью
+      default: false
+
+globals:
+  - stringParameter:
+      id: repositoryName
+      value: ${feature}Repository
+
+  - stringParameter:
+      id: defaultRepositoryName
+      value: Default${feature}Repository
+
+  - stringParameter:
+      id: serviceApiName
+      value: ${feature}ServiceApi
+
+  - stringParameter:
+      id: defaultServiceApiName
+      value: Default${feature}ServiceApi
+
+  - stringParameter:
+      id: interactorName
+      value: ${feature}Interactor
+
+  - stringParameter:
+      id: defaultInteractorName
+      value: Default${feature}Interactor
+
+recipe:
+  - instantiate:
+      from: data/repository/DefaultRepository.kt.ftl
+      to: ${srcOut}/data/repository/${defaultRepositoryName}.kt
+
+  - instantiateAndOpen:
+      from: domain/repository/Repository.kt.ftl
+      to: ${srcOut}/domain/repository/${repositoryName}.kt
+
+  - predicate:
+      validIf: ${includeNetwork}
+      commands:
+        - instantiateAndOpen:
+            from: data/network/ServiceApi.kt.ftl
+            to: ${srcOut}/data/network/${serviceApiName}.kt
+
+  - predicate:
+      validIf: ${includeNetwork}
+      commands:
+        - instantiate:
+            from: data/network/DefaultServiceApi.kt.ftl
+            to: ${srcOut}/data/network/${defaultServiceApiName}.kt
+
+  - instantiateAndOpen:
+      from: domain/interactor/Interactor.kt.ftl
+      to: ${srcOut}/domain/interactor/${interactorName}.kt
+
+  - instantiate:
+      from: domain/interactor/DefaultInteractor.kt.ftl
+      to: ${srcOut}/domain/interactor/${defaultInteractorName}.kt

@@ -1,0 +1,32 @@
+requiredParams:
+  name: Podlodka compose screen
+  description: Генерация compose screen в связке с decompose component
+
+widgets:
+  - stringParameter:
+      id: component
+      name: Имя компонента
+      constraints:
+        - class
+        - nonempty
+        - unique
+      default: Blank
+
+  - booleanParameter:
+      id: includeScaffold
+      name: Добавить scaffold?
+      default: true
+
+globals:
+  - stringParameter:
+      id: screenName
+      value: ${component}Screen
+
+  - stringParameter:
+      id: componentName
+      value: ${component}Component
+
+recipe:
+  - instantiateAndOpen:
+      from: ComposeScreen.kt.ftl
+      to: ${srcOut}/${screenName}.kt

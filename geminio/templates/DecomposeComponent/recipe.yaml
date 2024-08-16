@@ -1,0 +1,72 @@
+requiredParams:
+  name: Podlodka decompose component
+  description: Генерация decompose component в связке с MviKotlin
+
+widgets:
+  - stringParameter:
+      id: component
+      name: Имя компонента
+      constraints:
+        - class
+        - nonempty
+        - unique
+      default: Blank
+
+  - booleanParameter:
+      id: includeFactory
+      name: Создать фабрику для компонента?
+      default: false
+
+globals:
+  - stringParameter:
+      id: componentName
+      value: ${component}Component
+
+  - stringParameter:
+      id: defaultComponentName
+      value: Default${component}Component
+
+  - stringParameter:
+      id: uiStateName
+      value: ${component}UiState
+
+  - stringParameter:
+      id: storeName
+      value: ${component}Store
+
+  - stringParameter:
+      id: storeFactoryName
+      value: ${component}StoreFactory
+
+  - stringParameter:
+      id: dependenciesName
+      value: ${component}Dependencies
+
+recipe:
+  - instantiateAndOpen:
+      from: api/state/UiState.kt.ftl
+      to: ${srcOut}/api/state/${uiStateName}.kt
+
+  - instantiate:
+      from: api/Component.kt.ftl
+      to: ${srcOut}/api/${componentName}.kt
+
+  - instantiate:
+      from: api/Dependencies.kt.ftl
+      to: ${srcOut}/api/${dependenciesName}.kt
+
+  - instantiateAndOpen:
+      from: internal/logic/store/Store.kt.ftl
+      to: ${srcOut}/internal/logic/store/${storeName}.kt
+
+  - instantiate:
+      from: internal/logic/store/StoreFactory.kt.ftl
+      to: ${srcOut}/internal/logic/store/${storeFactoryName}.kt
+
+  - instantiate:
+      from: internal/logic/StateMapper.kt.ftl
+      to: ${srcOut}/internal/logic/StateMapper.kt
+
+  - instantiate:
+      from: internal/DefaultComponent.kt.ftl
+      to: ${srcOut}/internal/${defaultComponentName}.kt

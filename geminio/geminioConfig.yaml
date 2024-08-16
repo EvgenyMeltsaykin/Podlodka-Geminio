@@ -1,0 +1,6 @@
+templatesRootDirPath: /geminio/templates
+modulesTemplatesRootDirPath: /geminio/moduleTemplates
+
+groupsNames:
+  forNewGroup: Podlodka Templates
+  forNewModulesGroup: Podlodka Modules
