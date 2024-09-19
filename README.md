@@ -9,7 +9,7 @@
 
 ## Доклад
 - Запись
-- Презентация
+- [Презентация](GeminioPodlodka.pdf)
 
 ## Полезные источники
 - [Geminio](https://github.com/hhru/android-multimodule-plugin/blob/master/plugins/hh-geminio/README.md)
